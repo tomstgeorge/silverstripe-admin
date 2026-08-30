@@ -3,7 +3,12 @@ import $ from 'jquery';
 $.entwine('ss', function($) {
 
   // setup jquery.entwine
-  $.entwine.warningLevel = $.entwine.WARN_LEVEL_BESTPRACTISE;
+  // Guard against entwine being unavailable on the jQuery instance this module
+  // resolves during an AJAX panel load — assigning to an undefined entwine here
+  // throws and aborts panel init, freezing CMS menu navigation.
+  if ($.entwine) {
+    $.entwine.warningLevel = $.entwine.WARN_LEVEL_BESTPRACTISE;
+  }
 
   /**
    * Horizontal collapsible panel. Generic enough to work with CMS menu as well as various "filter" panels.

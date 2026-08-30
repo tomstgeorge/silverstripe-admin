@@ -70,7 +70,11 @@ $(window).on('resize.leftandmain', function(e) {
 });
 
 // setup jquery.entwine
-$.entwine.warningLevel = $.entwine.WARN_LEVEL_BESTPRACTISE;
+// Guard against entwine being unavailable on the resolved jQuery instance —
+// see LeftAndMain.Panel.js for the panel-load crash this prevents.
+if ($.entwine) {
+  $.entwine.warningLevel = $.entwine.WARN_LEVEL_BESTPRACTISE;
+}
 
 $.entwine('ss', function($) {
 
