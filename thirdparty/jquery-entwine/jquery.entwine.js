@@ -699,7 +699,12 @@ Sizzle is good for finding elements for a selector, but not so good for telling 
 
 	$.selector.SelectorBase.addMethod('matches', function(el){	
 		this.matches = new Function('el', join([ 
-			'if (!el) return false;',
+			// Only element nodes (nodeType 1) can match a CSS selector. Guarding
+			// here covers EVERY caller of matches() — the entwine event proxies
+			// (selector_proxy/property_proxy) run matches(e.target), and e.target
+			// can be a text or comment node for bubbled DOM events, which have no
+			// getAttribute() and would otherwise throw inside this compiled body.
+			'if (!el || el.nodeType !== 1) return false;',
 			this.compile(new State()).replace(BAD, 'return false').replace(GOOD, 'return true')
 		]));
 		return this.matches(el);
