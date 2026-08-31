@@ -2,6 +2,13 @@
  * File: LeftAndMain.js
  */
 import $ from 'jquery';
+// Ensure jquery.entwine is attached to this module's jQuery instance before the
+// top-level `$.entwine('ss', ...)` registration below runs. bundle.js and
+// vendor.js are separate webpack outputs; relying on vendor.js to attach
+// entwine first races during AJAX panel eval and leaves $.entwine undefined,
+// which throws and freezes the CMS left-menu. Sibling legacy modules
+// (GridField.js, TabSet.js, DatetimeField.js) already import it for this reason.
+import '../../../thirdparty/jquery-entwine/jquery.entwine.js';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import IframeDialog from 'components/IframeDialog/IframeDialog';
